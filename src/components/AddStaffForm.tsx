@@ -6,9 +6,13 @@ interface AddStaffObject {
 function AddStaffForm() {
     const [newUser, setNewUser] = useState<AddStaffObject>({ firstName: ""})
 
+    const handleAddStaff = (e) => {
+        
+    }
+
     return (
         <div className="shadow-sm border-2 border-black-600 p-3 rounded text-2x1 max-w-[50%]">
-            <form onSubmit={(e) => {}} className="table space-y-3">
+            <form onSubmit={(e) => {setNewUser(handleAddStaff(e))}} className="table space-y-3">
                 <div className="table-row space-y-6">
                     <label className="table-cell">Staff Name: </label>
                     <input type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
