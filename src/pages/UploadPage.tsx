@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Seating from "../components/Seating";
+import StaffList from "../components/StaffList";
+import useFile from "../context/use-file";
 
-interface StaffObject {
+export interface StaffObject {
     seating: {
         firstName: string
     }[][],
@@ -10,9 +13,21 @@ interface StaffObject {
 }
 
 function UploadPage() {
-    const [currentFile, setCurrentFile] = useState<StaffObject>();
+    const { currentFile, setCurrentFile } = useFile();
+    /* const [currentFile, setCurrentFile] = useState<StaffObject>({ seating: [[]], staff: [{ firstName: "" }] }); */
     const [fileUploaded, setFileUploaded] = useState(false);
+    const [showSeating, setShowSeating] = useState(false);
+    const [showStaffList, setShowStaffList] = useState(false);
 
+    const handleSeatingClick = () => {
+        if(showStaffList) { setShowStaffList(false) }
+        setShowSeating(!showSeating)
+    }
+
+    const handleStaffListClick = () => {
+        if(showSeating) { setShowSeating(false) }
+        setShowStaffList(!showStaffList)
+    }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         const { files } = event.target;
@@ -28,36 +43,36 @@ function UploadPage() {
         }
     }
 
-    const renderedStaff = currentFile?.staff.map((staff) => {
-        return (
-            <div>
-                {staff.firstName}
-            </div>
-        )
-    });
-    const renderedSeating = currentFile?.seating.map((seats) => {
-        return (
-            <div className="flex">
-                {
-                    seats.map((seat) => {
-                        if (seat != null) {
-                            return <div className="border border-indigo-600 h-16 w-16">{seat.firstName}</div>
-                        }
-                        else {
-                            return <div className="border border-indigo-600 h-16 w-16"></div>
-                        }
-                    })
-                }
-            </div>
-
-        );
-    });
+    const handleSave = () => {
+        const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+            JSON.stringify(currentFile)
+          )}`;
+          const link = document.createElement("a");
+          link.href = jsonString;
+          var currentDate = new Date().toISOString().substring(0, 19) +"Z"
+          link.download = "staff_availability_" + currentDate + ".json";
+      
+          link.click();
+    }
 
     return (
         <>
-            {fileUploaded ? <h2>Please select an option:</h2> : <div><h1>Please upload the staff availability file:</h1>
-            <input type="file" onChange={handleChange} /></div>
-    }
+            {fileUploaded
+                ?
+                <div>
+                    <h1>Staff Availability:</h1>
+                    <div className="py-3 space-x-3">
+                        <button onClick={handleSeatingClick}>Seating</button>
+                        <button onClick={handleStaffListClick}>Staff List</button>
+                        <button onClick={handleSave}>Save Changes</button>
+                    </div>
+                    {showSeating && <Seating {...currentFile} />}
+                    {showStaffList && < StaffList {...currentFile}/>}
+                </div>
+                :
+                <div><h1>Please upload the staff availability file:</h1>
+                    <input className="py-3" type="file" onChange={handleChange} /></div>
+            }
         </>
     );
 };
