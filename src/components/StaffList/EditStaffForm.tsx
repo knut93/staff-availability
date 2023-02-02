@@ -1,12 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useFile from '../../hooks/use-file'
 import { Staff } from './StaffList';
 
-function EditForm( currentEditStaff: Staff) {
-    console.log("Inside EditForm")
-    console.log(currentEditStaff)
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+interface AvailabilityInterface {
+    mon?: string,
+    tue?: string,
+    wed?: string,
+    thu?: string,
+    fri?: string,
+    sat?: string,
+    sun?: string
+}
+function EditForm(props: { currentEditStaff: Staff, setCurrentEditStaff: Function }) {
+    const { currentEditStaff, setCurrentEditStaff } = props;
+    const [monAvail, setMonAvail] = useState<string | undefined>();
+    const [tueAvail, setTueAvail] = useState<string | undefined>();
+    const [wedAvail, setWedAvail] = useState<string | undefined>();
+    const [thuAvail, setThuAvail] = useState<string | undefined>();
+    const [friAvail, setFriAvail] = useState<string | undefined>();
+    const [satAvail, setSatAvail] = useState<string | undefined>();
+    const [sunAvail, setSunAvail] = useState<string | undefined>();
 
+    useEffect(() => {
+        setMonAvail(currentEditStaff.mon);
+        setTueAvail(currentEditStaff.tue);
+        setWedAvail(currentEditStaff.wed);
+        setThuAvail(currentEditStaff.thu);
+        setFriAvail(currentEditStaff.fri);
+        setSatAvail(currentEditStaff.sat);
+        setSunAvail(currentEditStaff.sun);
+    }, []);
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
     }
 
     return (
@@ -17,31 +43,31 @@ function EditForm( currentEditStaff: Staff) {
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Mon: </label>
-                    <input value={currentEditStaff.mon} id="mon" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={monAvail} onChange={e => setMonAvail(e.target.value)} id="mon" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Tue: </label>
-                    <input value={currentEditStaff.tue} id="tue" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={tueAvail} onChange={e => setTueAvail(e.target.value)} id="tue" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Wed: </label>
-                    <input id="wed" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={wedAvail} onChange={e => setWedAvail(e.target.value)} id="wed" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Thu: </label>
-                    <input id="thu" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={thuAvail} onChange={e => setThuAvail(e.target.value)} id="thu" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Fri: </label>
-                    <input id="fri" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={friAvail} onChange={e => setFriAvail(e.target.value)} id="fri" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Sat: </label>
-                    <input id="sun" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={satAvail} onChange={e => setSatAvail(e.target.value)} id="sat" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <div className="table-row space-y-3">
                     <label className="table-cell">Sun: </label>
-                    <input id="sun" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
+                    <input value={sunAvail} onChange={e => setSunAvail(e.target.value)} id="sun" type="block text" className='table-cell border-2 rounded border-gray-600-p-1' />
                 </div>
                 <button type="submit" className="bg-blue-100">Confirm</button>
             </form>
@@ -66,7 +92,6 @@ function EditStaffForm() {
             </button>
         )
     });
-
     return (
         <div className="flex space-y-2">
             <div className="pr-3">
@@ -74,7 +99,7 @@ function EditStaffForm() {
 
             </div>
             {
-                editForm && < EditForm {...currentEditStaff}/>
+                editForm && <EditForm currentEditStaff={currentEditStaff} setCurrentEditStaff={setCurrentEditStaff}/>
             }
         </div>
     )
