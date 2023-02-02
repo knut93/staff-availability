@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect } from 'react';
 
-const initialState = { 
+export const initialState = {
     currentFile: {
-        seating: [[]], 
-        staff: [{ firstName: "" }] 
+        seating: [[]],
+        staff: [{ firstName: "" }]
     },
-    setCurrentFile: () => {}
+    setCurrentFile: () => { }
 }
 
 export interface FileContextInterface {
@@ -18,18 +18,25 @@ export interface StaffObject {
         firstName: string
     }[][],
     staff: {
-        firstName: string
+        firstName: string,
+        mon?: string,
+        tue?: string,
+        wed?: string,
+        thu?: string,
+        fri?: string,
+        sat?: string,
+        sun?: string
     }[]
 }
 export const FileContext = createContext<FileContextInterface>(initialState);
 
-function FileProvider({children}: {children: React.ReactNode}) {
+function FileProvider({ children }: { children: React.ReactNode }) {
     const [currentFile, setCurrentFile] = useState<StaffObject>({
-        seating: [[]], 
-        staff: [{ firstName: "" }] 
+        seating: [[]],
+        staff: [{ firstName: "" }]
     });
     return (
-        <FileContext.Provider value={{currentFile, setCurrentFile}}>
+        <FileContext.Provider value={{ currentFile, setCurrentFile }}>
             {children}
         </FileContext.Provider>
     )

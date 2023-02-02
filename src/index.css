@@ -42,7 +42,7 @@ button {
   font-family: inherit;
   background-color: #eee5e5;
   cursor: pointer;
-  /* transition: border-color 0.25s; */
+  transition: border-color 0.25s; 
 }
 button:hover {
   border-color: #646cff;

@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Seating from "../components/Seating";
-import StaffList from "../components/StaffList";
-import useFile from "../context/use-file";
-
-export interface StaffObject {
-    seating: {
-        firstName: string
-    }[][],
-    staff: {
-        firstName: string
-    }[]
-}
+import StaffList from "../components/StaffList/StaffList";
+import useFile from "../hooks/use-file";
 
 function UploadPage() {
     const { currentFile, setCurrentFile } = useFile();
-    /* const [currentFile, setCurrentFile] = useState<StaffObject>({ seating: [[]], staff: [{ firstName: "" }] }); */
     const [fileUploaded, setFileUploaded] = useState(false);
     const [showSeating, setShowSeating] = useState(false);
     const [showStaffList, setShowStaffList] = useState(false);
@@ -37,6 +27,7 @@ function UploadPage() {
             reader.readAsText(fileRef, "UTF-8");
             reader.onload = (event: any) => {
                 setCurrentFile(JSON.parse(event.target.result))
+                console.log("Loading object:")
                 console.log(JSON.parse(event.target.result))
                 setFileUploaded(true);
             }
@@ -62,12 +53,12 @@ function UploadPage() {
                 <div>
                     <h1>Staff Availability:</h1>
                     <div className="py-3 space-x-3">
-                        <button onClick={handleSeatingClick}>Seating</button>
-                        <button onClick={handleStaffListClick}>Staff List</button>
-                        <button onClick={handleSave}>Save Changes</button>
+                        <button className="bg-blue-100" onClick={handleSeatingClick}>Seating</button>
+                        <button className="bg-blue-100" onClick={handleStaffListClick}>Staff List</button>
+                        <button className="bg-blue-100" onClick={handleSave}>Save Changes</button>
                     </div>
-                    {showSeating && <Seating {...currentFile} />}
-                    {showStaffList && < StaffList {...currentFile}/>}
+                    {showSeating && <Seating />}
+                    {showStaffList && < StaffList />}
                 </div>
                 :
                 <div><h1>Please upload the staff availability file:</h1>

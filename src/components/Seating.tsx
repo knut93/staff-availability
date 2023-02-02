@@ -1,10 +1,11 @@
 import React from 'react'
-import { StaffObject } from '../pages/UploadPage'
+import { StaffObject } from '../context/file';
+import useFile from '../hooks/use-file';
+function Seating() {
+    const { currentFile, setCurrentFile } = useFile();
 
-function Seating(props: StaffObject) {
     console.log("Inside Seating")
-    console.log(props)
-    const renderedSeating = props.seating.map((seats) => {
+    const renderedSeating = currentFile.seating.map((seats) => {
         return (
             <div className="flex">
                 {
